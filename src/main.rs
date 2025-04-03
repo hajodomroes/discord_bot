@@ -33,7 +33,11 @@ async fn on_error(error: FrameworkError<'_, Data, Error>) {
 #[tokio::main]
 async fn main() {
     let options = poise::FrameworkOptions {
-        commands: vec![commands::help::help()],
+        commands: vec![
+            commands::help(),
+            commands::ping(),
+            commands::play(),
+        ],
         prefix_options: poise::PrefixFrameworkOptions {
             prefix: Some("!".to_string()),
             additional_prefixes: vec![
@@ -46,10 +50,10 @@ async fn main() {
         skip_checks_for_owners: true,
         ..Default::default()
     };
-    
+
     let framework = poise::Framework::builder()
         .setup(move |ctx, ready, framework| {
-            Box::pin(async move { 
+            Box::pin(async move {
                 println!("Logged in as {}", ready.user.name);
                 poise::builtins::register_globally(ctx, &framework.options().commands).await?;
                 Ok(Data {
