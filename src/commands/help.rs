@@ -16,6 +16,6 @@ pub async fn help(
             ..Default::default()
         },
     )
-        .await?;
+    .await?;
     Ok(())
 }

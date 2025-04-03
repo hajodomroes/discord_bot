@@ -33,17 +33,10 @@ async fn on_error(error: FrameworkError<'_, Data, Error>) {
 #[tokio::main]
 async fn main() {
     let options = poise::FrameworkOptions {
-        commands: vec![
-            commands::help(),
-            commands::ping(),
-            commands::play(),
-        ],
+        commands: vec![commands::help(), commands::ping(), commands::play()],
         prefix_options: poise::PrefixFrameworkOptions {
             prefix: Some("!".to_string()),
-            additional_prefixes: vec![
-                poise::Prefix::Literal("/"),
-                poise::Prefix::Literal("-"),
-            ],
+            additional_prefixes: vec![poise::Prefix::Literal("/"), poise::Prefix::Literal("-")],
             ..Default::default()
         },
         on_error: |error| Box::pin(on_error(error)),
@@ -66,7 +59,8 @@ async fn main() {
 
     let token = env::var("DISCORD_TOKEN").expect("Expected a token in the environment");
     let intents = GatewayIntents::non_privileged()
-        | GatewayIntents::MESSAGE_CONTENT;
+        | GatewayIntents::MESSAGE_CONTENT
+        | GatewayIntents::GUILD_VOICE_STATES;
 
     let mut client = Client::builder(&token, intents)
         .framework(framework)
